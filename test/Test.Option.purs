@@ -7,9 +7,7 @@ import Data.Maybe as Data.Maybe
 import Option as Option
 import Test.Spec as Test.Spec
 import Test.Spec.Assertions as Test.Spec.Assertions
-
-data Proxy (symbol :: Symbol)
-  = Proxy
+import Type.Proxy as Type.Proxy
 
 spec :: Test.Spec.Spec Unit
 spec =
@@ -195,7 +193,7 @@ spec_recordRename =
         someRecord = Option.recordFromRecord { foo: false }
 
         anotherRecord :: Option.Record ( foo :: Boolean ) ( bar2 :: Int )
-        anotherRecord = Option.recordRename { bar: Proxy :: Proxy "bar2" } someRecord
+        anotherRecord = Option.recordRename { bar: Type.Proxy.Proxy :: Type.Proxy.Proxy "bar2" } someRecord
       Option.recordToRecord anotherRecord `Test.Spec.Assertions.shouldEqual` { bar2: Data.Maybe.Nothing, foo: false }
     Test.Spec.it "can rename both required and optional values" do
       let
@@ -203,7 +201,7 @@ spec_recordRename =
         someRecord = Option.recordFromRecord { foo: false }
 
         anotherRecord :: Option.Record ( foo1 :: Boolean ) ( bar2 :: Int )
-        anotherRecord = Option.recordRename { foo: Proxy :: Proxy "foo1", bar: Proxy :: Proxy "bar2" } someRecord
+        anotherRecord = Option.recordRename { foo: Type.Proxy.Proxy :: Type.Proxy.Proxy "foo1", bar: Type.Proxy.Proxy :: Type.Proxy.Proxy "bar2" } someRecord
       Option.recordToRecord anotherRecord `Test.Spec.Assertions.shouldEqual` { bar2: Data.Maybe.Nothing, foo1: false }
     Test.Spec.it "can rename any required and optional values" do
       let
@@ -211,7 +209,7 @@ spec_recordRename =
         someRecord = Option.recordFromRecord { foo: false, bar: 31, baz: "hi" }
 
         anotherRecord :: Option.Record ( foo :: Boolean, bar :: Int, baz3 :: String ) ( qux4 :: Boolean, cor :: Int, gar :: String )
-        anotherRecord = Option.recordRename { baz: Proxy :: Proxy "baz3", qux: Proxy :: Proxy "qux4" } someRecord
+        anotherRecord = Option.recordRename { baz: Type.Proxy.Proxy :: Type.Proxy.Proxy "baz3", qux: Type.Proxy.Proxy :: Type.Proxy.Proxy "qux4" } someRecord
       Option.recordToRecord anotherRecord `Test.Spec.Assertions.shouldEqual` { bar: 31, baz3: "hi", cor: Data.Maybe.Nothing, foo: false, gar: Data.Maybe.Nothing, qux4: Data.Maybe.Nothing }
     Test.Spec.it "can rename any required and optional values with any interleaving of names" do
       let
@@ -219,7 +217,7 @@ spec_recordRename =
         someRecord = Option.recordFromRecord { a: false, c: false, e: false }
 
         anotherRecord :: Option.Record ( a :: Boolean, c2 :: Boolean, e :: Boolean ) ( b4 :: Boolean, d5 :: Boolean, f :: Boolean )
-        anotherRecord = Option.recordRename { b: Proxy :: Proxy "b4", c: Proxy :: Proxy "c2", d: Proxy :: Proxy "d5" } someRecord
+        anotherRecord = Option.recordRename { b: Type.Proxy.Proxy :: Type.Proxy.Proxy "b4", c: Type.Proxy.Proxy :: Type.Proxy.Proxy "c2", d: Type.Proxy.Proxy :: Type.Proxy.Proxy "d5" } someRecord
       Option.recordToRecord anotherRecord `Test.Spec.Assertions.shouldEqual` { a: false, b4: Data.Maybe.Nothing, c2: false, d5: Data.Maybe.Nothing, e: false, f: Data.Maybe.Nothing }
 
 spec_recordSet :: Test.Spec.Spec Unit
@@ -318,16 +316,16 @@ spec_rename =
         someOption = Option.empty
 
         anotherOption :: Option.Option ( foo :: Boolean, bar2 :: Int )
-        anotherOption = Option.rename { bar: Proxy :: Proxy "bar2" } someOption
-      Option.get (Proxy :: _ "bar2") anotherOption `Test.Spec.Assertions.shouldEqual` Data.Maybe.Nothing
+        anotherOption = Option.rename { bar: Type.Proxy.Proxy :: Type.Proxy.Proxy "bar2" } someOption
+      Option.get (Type.Proxy.Proxy :: _ "bar2") anotherOption `Test.Spec.Assertions.shouldEqual` Data.Maybe.Nothing
     Test.Spec.it "can rename any field" do
       let
         someOption :: Option.Option ( foo :: Boolean, bar :: Int, qux :: String )
         someOption = Option.empty
 
         anotherOption :: Option.Option ( foo :: Boolean, bar :: Int, qux3 :: String )
-        anotherOption = Option.rename { qux: Proxy :: Proxy "qux3" } someOption
-      Option.get (Proxy :: _ "qux3") anotherOption `Test.Spec.Assertions.shouldEqual` Data.Maybe.Nothing
+        anotherOption = Option.rename { qux: Type.Proxy.Proxy :: Type.Proxy.Proxy "qux3" } someOption
+      Option.get (Type.Proxy.Proxy :: _ "qux3") anotherOption `Test.Spec.Assertions.shouldEqual` Data.Maybe.Nothing
 
 spec_set :: Test.Spec.Spec Unit
 spec_set =
@@ -338,8 +336,8 @@ spec_set =
         someOption = Option.empty
 
         anotherOption :: Option.Option ( foo :: Boolean, bar :: Int )
-        anotherOption = Option.set (Proxy :: _ "bar") 31 someOption
-      Option.get (Proxy :: _ "bar") anotherOption `Test.Spec.Assertions.shouldEqual` Data.Maybe.Just 31
+        anotherOption = Option.set (Type.Proxy.Proxy :: _ "bar") 31 someOption
+      Option.get (Type.Proxy.Proxy :: _ "bar") anotherOption `Test.Spec.Assertions.shouldEqual` Data.Maybe.Just 31
 
 spec_set' :: Test.Spec.Spec Unit
 spec_set' =
@@ -351,7 +349,7 @@ spec_set' =
 
         anotherOption :: Option.Option ( foo :: Boolean, bar :: Int )
         anotherOption = Option.set' { bar: 31 } someOption
-      Option.get (Proxy :: _ "bar") anotherOption `Test.Spec.Assertions.shouldEqual` Data.Maybe.Just 31
+      Option.get (Type.Proxy.Proxy :: _ "bar") anotherOption `Test.Spec.Assertions.shouldEqual` Data.Maybe.Just 31
     Test.Spec.it "can work for any field" do
       let
         someOption :: Option.Option ( foo :: Boolean, bar :: Int, qux :: String )
@@ -359,7 +357,7 @@ spec_set' =
 
         anotherOption :: Option.Option ( foo :: Boolean, bar :: Int, qux :: String )
         anotherOption = Option.set' { qux: "hi" } someOption
-      Option.get (Proxy :: _ "qux") anotherOption `Test.Spec.Assertions.shouldEqual` Data.Maybe.Just "hi"
+      Option.get (Type.Proxy.Proxy :: _ "qux") anotherOption `Test.Spec.Assertions.shouldEqual` Data.Maybe.Just "hi"
     Test.Spec.it "can change the type" do
       let
         someOption :: Option.Option ( foo :: Boolean, bar :: Boolean )
@@ -367,7 +365,7 @@ spec_set' =
 
         anotherOption :: Option.Option ( foo :: Boolean, bar :: Int )
         anotherOption = Option.set' { bar: 31 } someOption
-      Option.get (Proxy :: _ "bar") anotherOption `Test.Spec.Assertions.shouldEqual` Data.Maybe.Just 31
+      Option.get (Type.Proxy.Proxy :: _ "bar") anotherOption `Test.Spec.Assertions.shouldEqual` Data.Maybe.Just 31
     Test.Spec.it "can use a `Data.Maybe.Maybe _`" do
       let
         someOption :: Option.Option ( foo :: Boolean, bar :: Int )
@@ -375,7 +373,7 @@ spec_set' =
 
         anotherOption :: Option.Option ( foo :: Boolean, bar :: Int )
         anotherOption = Option.set' { bar: Data.Maybe.Just 31 } someOption
-      Option.get (Proxy :: _ "bar") anotherOption `Test.Spec.Assertions.shouldEqual` Data.Maybe.Just 31
+      Option.get (Type.Proxy.Proxy :: _ "bar") anotherOption `Test.Spec.Assertions.shouldEqual` Data.Maybe.Just 31
     Test.Spec.it "`Data.Maybe.Nothing` removes the previous value" do
       let
         someOption :: Option.Option ( foo :: Boolean, bar :: Int )
@@ -383,4 +381,4 @@ spec_set' =
 
         anotherOption :: Option.Option ( foo :: Boolean, bar :: Int )
         anotherOption = Option.set' { bar: Data.Maybe.Nothing } someOption
-      Option.get (Proxy :: _ "bar") anotherOption `Test.Spec.Assertions.shouldEqual` Data.Maybe.Nothing
+      Option.get (Type.Proxy.Proxy :: _ "bar") anotherOption `Test.Spec.Assertions.shouldEqual` Data.Maybe.Nothing
